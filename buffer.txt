@@ -1,0 +1,23 @@
+VERILOG CODE:
+module buffer(a,c,y);
+input a;
+output y;
+inout c;
+assign c=~a;
+assign y=~c;
+endmodule
+TEST BENCH CODE:
+module buffer_test;
+reg a;
+wire c;
+wire y;
+buffer a1(a,c,y);
+initial
+begin
+$monitor ($time,"c=%d,y=%d"c,y);
+#10 a=1'b0;
+#10 a=1'b1;
+#10 a=1'b0;
+#10 $finish;
+end
+endmodule

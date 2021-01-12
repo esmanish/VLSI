@@ -1,0 +1,23 @@
+VERILOG CODE:
+module inv(out,in);
+output out;
+input in;
+not(out,in);
+endmodule
+TEST BENCH CODE:
+// Declare all inputs as register and output as wire
+module inv_test;
+wire out;
+reg in;
+inv a1(out,in); // Instead of a1 can give any names u like other than module name.
+initial // All stimulus must be inside initial block, clock must be inside always block.
+begin
+Department of Electronics & Communication Engineering, SCEM, Mangaluru.
+715ECL77:VLSI LABORATORY
+#10 in=1'b0;
+#10 in=1'b1;
+#10 in=1'bx;
+#10 in=1'bz;
+#10 $finish;
+end
+endmodule

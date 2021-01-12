@@ -1,0 +1,29 @@
+VERILOG CODE:
+module allgate (a,b,y);
+input a,b;
+output[1:8]y;
+assign y[1]=a+b;
+assign y[2]=a|b;
+assign y[3]=~a;
+assign y[4]=~(a+b);
+assign y[5]=~(a|b);
+assign y[6]=a^b;
+assign y[7]=a&b;
+assign y[8]=~(a&b);
+endmodule
+TEST BENCH CODE:
+module tb_allgate;
+reg a,b;
+wire [1:8]y;
+allgate a1(a,b,y);
+initial
+begin
+a=1'b0;
+forever #100 a=~a;
+end
+initial
+begin
+b=1'b0;
+forever #200 b=~b;
+end
+endmodule

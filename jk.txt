@@ -1,0 +1,51 @@
+VERILOG CODE:
+module jkff(q,qb,clk,j,k,rst);
+input clk,rst,j,k;
+output q,qb;
+reg q,tq;
+always@ (posedge clk or posedge rst)
+begin
+if(rst==1)
+begin
+q<=1'b0;
+tq<=1'b0;
+end
+else
+begin
+if(j==1'b1 && k==1'b0)
+q<=j;
+else if(j==1'b0 && k==1'b1)
+q<=1'b0;
+else if(j==1'b1 && k==1'b1)
+begin
+tq<=~tq;
+q<=tq;
+end
+end
+end
+assign
+qb=~q;
+endmodule
+TESTBENCH CODE:
+module jk_test;
+reg clk, rst,j,k;
+wire q,qb;
+jkff jk1(q,qb,clk,rst,j,k);
+initial
+clk =1'b0;
+always
+#10 clk=~clk;
+initial
+begin
+j=1'b0;k=1'b0;rst=1'b0;
+#30 rst=1'b0;
+#60 j=1'b0;k=1'b1;
+#20 j=1'b1;k=1'b0;
+#20 j=1'b0;k=1'b1;
+#20 j=1'b1;k=1'b1;
+#50 rst=1'b1;
+End
+initial
+#300 $finish;
+endmodule
+

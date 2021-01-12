@@ -1,0 +1,44 @@
+VERILOG CODE:
+module tff(q,qd,clk,rst,tin);
+input tin,clk,rst;
+output q,qd;
+reg tq;
+always@(posedge clk or posedge rst)
+begin
+if(rst==1)
+tq<=1'b0;
+else
+begin
+if(tin)
+tq<=1'b1;
+end
+end
+assign q=tq;
+assign qb=~tq;
+endmodule
+TESTBENCH CODE:
+module tff_test;
+reg tin,rst,clk;
+wire q,qd;
+tff abc(q,qd,clk,rst,tin);
+initial
+clk=1'b0;
+always
+#10 clk=~clk;
+initial
+begin
+rst=1'b1;tin=1'b0;
+#300 rst=1'b0;
+#100 tin=1'b1;
+#205 tin=1'b0;
+#300 tin=1'b1;
+#175 tin=1'b0;
+#280 rst=1'b1;
+#200 rst=1'b0;
+#280 tin=1'b1;
+#100;
+end
+initial
+#2000 $finish;
+Endmodule
+

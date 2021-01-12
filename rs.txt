@@ -1,0 +1,54 @@
+VERILOG CODE:
+module srff(q,qb,s,r,clk,rst);
+output q,qb;
+input clk,s,r,rst;
+reg tq;
+always@ (posedge clk or posedge rst)
+begin
+if(rst==1)
+tq<=1'b0;
+else
+begin
+if (s==1'b0 && r==1'b0)
+tq<=tq;
+else if(s==1'0 && r==1'b1)
+tq<=1'b0;
+else if(s==1'b1 && r==1'b0)
+tq<=1'b1;
+else if(s==1'b1 && r==1'b1)
+tq<=1'bx;
+end
+end
+assign q=tq;
+assign qb=~tq;
+endmodule
+TESTBENCH CODE:
+module srff_test;
+reg clk,s,r,rst;
+wire q,qb;
+srff sr1(q,qb,s,r,clk,rst);
+initial
+clk=1'b0;
+always
+#10 clk=~clk;
+initial
+begin
+rst=1'b1;
+s=1'b1;
+r=1'b0;
+#10 s=1'b0;
+#10 r=1'b1;
+#10 rst=1'b0;
+#10 s=1'b1;
+r=1'b0;
+#10 s=1'b0;
+r=1'b0;
+#10 s=1'b0;
+r=1'b1;
+#10 rst=1'b1;
+#10 s=1'b1;
+r=1'b0;
+end
+initial
+#500 $finish;
+endmodule

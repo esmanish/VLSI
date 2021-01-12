@@ -1,0 +1,36 @@
+VERILOG CODE:
+module par(cin,x,y,sum,cout);
+input cin;
+input [3:0]x,y;
+output[3:0]sum;
+output cout;
+fulladd g0(cin,x[0],y[0],sum[0],c0);
+fulladd g1(c0,x[1],y[1],sum[1],c1);
+fulladd g2(c1,x[2],y[2],sum[2],c2);
+fulladd g3(c2,x[3],y[3],sum[3],cout);
+endmodule
+module fulladd(cin,x,y,sum,cout);
+input cin ,x,y;
+output sum ,cout;
+assign sum=x^y^cin;
+assign cout=((x&y)||(x&cin)||(y&cin));
+endmodule
+TESTBENCH CODE:
+module par_test;
+reg [3:0]x,y;
+reg cin;
+wire [3:0]sum;
+wire cout;
+par abc(cin,x,y,sum,cout);
+initial
+begin
+$monitor($time,"sum=%d",sum);
+x=4'b0000;y=4'b0000;
+cin=1'b0;
+#20 x=4'b1111;y=4'b1010;
+#20 x=4'b1011;y=4'b0110;
+#20 x=4'b1111;y=4'b1111;
+#50 $finish;
+end
+endmodule
+

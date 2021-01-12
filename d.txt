@@ -1,0 +1,36 @@
+VERILOG CODE:
+module dff(d,q,qd,clk);
+input d,clk;
+output q,qd;
+reg q,qd;
+initial
+begin
+q=0;
+end
+always@(posedge clk)
+begin
+if(d==0)
+q=0;
+else
+q=1;
+qd=~q;
+end
+endmodule
+TESTBENCH CODE:
+module dff_test;
+reg d,clk;
+wire q,qd;
+dff dff1(d,q,qd,clk);
+initial
+clk=1'b0;
+always
+#10 clk=~clk;
+Initial
+begin
+$monitor($time,"q=%d","qd=%d",q,qd);
+d=1'b0;
+#30 d=1'b1;
+#30 d=1'b0;
+#30 $finish;
+end
+endmodule

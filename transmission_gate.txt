@@ -1,0 +1,35 @@
+1.6 Program:
+VERILOG CODE:
+module transgate(s,x,y);
+input s,x;
+output y;
+reg y;
+always@ (x or s)
+begin
+if(x==0 && s==1)
+y =1'b0;
+if(x==1 && s==1)
+y =1'b1;
+if( s == 0)
+y=1'bx;
+end
+endmodule
+TEST BENCH CODE:
+module transgate_test;
+reg x,s;
+wire y;
+transgate a1(s,x,y);
+initial
+begin
+$monitor($time,"y=%d",y);
+x=1'b0;
+s=1'b1;
+#10 x=1'b1;
+s=1'b1;
+#10 x=1'b0;
+s=1'b0;
+#10 x=1'b1;
+s=1'b0;
+#10 $finish;
+end
+endmodule

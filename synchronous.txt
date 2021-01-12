@@ -1,0 +1,54 @@
+VERILOG CODE:
+module syncnt(cnt,e,q);
+input cnt,e;
+output [3:0]q;
+wire e1,e2,e3;
+tff aa(e,cnt,q[0]);
+and1 go(q[0],e,e1);
+tff bb(e1,cnt,q[1]);
+and2 g1(q[1],q[0],e,e2);
+tff cc(e2,cnt,q[2]);
+and3 g2(q[2],q[1],q[0],e,e3);
+tff dd(e3,cnt,q[3]);
+endmodule
+module tff(t,clk,q);
+input t,clk;
+output q;
+reg q;
+initial
+q=1'b0;
+always@(posedge clk)
+begin
+if(t==0)
+q=q;
+else
+q=~q;
+end
+endmodule
+module and1(a,b,c);
+input a,b;
+output c;
+assign c=a&b;
+endmodule
+module and2(d,e,f,g);
+input d,e,f;
+output g;
+assign g=d&e&f;
+endmodule
+module and3(p,q,r,s,t);
+input p,q,r,s;
+output t;
+assign t=p&q&r&s;
+endmodule
+TESTBENCH CODE:
+module syncnt_test;
+reg cnt,e;
+wire[3:0]q;
+syncnt a1(cnt,e,q);
+initial
+begin
+cnt=0;
+e=1;
+end
+always #10cnt=~cnt;
+endmodule

@@ -1,0 +1,41 @@
+VERILOG CODE:
+module account(cnt,e,q);
+input cnt,e;
+output [3:0]q;
+wire q1,q2,q3,q4;
+tff aaa(e,cnt,q[0],q1);
+tff bbb(e,q1,q[1],q2);
+tff ccc(e,q2,q[2],q3);
+tff ddd(e,q3,q[3],q4);
+endmodule
+module tff(t,clk,q,qb);
+input t,clk;
+output q,qb;
+reg q,qb;
+initial
+begin
+q=1'b0;
+qb=1'b1;
+end
+always@(posedge clk)
+begin
+if(t==0)
+q=q;
+else
+q=~q;
+qb=~q;
+end
+endmodule
+TESTBENCH CODE:
+module account_test;
+reg cnt,e;
+wire [3:0]q;
+account ac(cnt,e,q);
+initial
+begin
+cnt=0;
+e=1;
+end
+always
+#100 cnt=~cnt;
+Endmodule
